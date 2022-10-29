@@ -2,9 +2,12 @@ import {Menu} from './core/menu'
 import {classOpen} from './constants'
 
 export default class ContextMenu extends Menu {
+  #pointsMenu
+
   constructor(selector, settings) {
     super(selector)
     this.modules = settings.modules
+    this.#pointsMenu = []
   }
 
   open() {
@@ -26,18 +29,18 @@ export default class ContextMenu extends Menu {
     filteredElements.forEach(el => el.remove())
   }
 
-  renderMenu() {
-    this.modules = this.modules.map(Module => new Module)
+  #renderMenu() {
+    this.modules = this.modules.map(module => new module)
 
     this.modules.forEach(instance => {
-      const moduleElement = instance.toHTML()
-
-      this.add(moduleElement)
+      const moduleEl = instance.toHTML()
+      this.#pointsMenu.push(moduleEl)
+      return this.add(this.#pointsMenu.join(''))
     })
   }
 
   run() {
-    this.renderMenu()
+    this.#renderMenu()
 
     this.el.addEventListener('click', ({target}) => {
       if (!target.classList.contains('menu-item')) return false
