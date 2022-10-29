@@ -2,15 +2,16 @@ import {Menu} from './core/menu'
 import {classOpen} from './constants'
 
 export default class ContextMenu extends Menu {
+  #modules
   #pointsMenu
 
   constructor(selector, settings) {
     super(selector)
-    this.modules = settings.modules
+    this.#modules = settings.modules
     this.#pointsMenu = []
   }
 
-  open() {
+  #open() {
     this.el.classList.add(classOpen)
   }
 
@@ -18,24 +19,24 @@ export default class ContextMenu extends Menu {
     this.el.classList.remove(classOpen)
   }
 
-  add(module) {
+  #add(module) {
     this.el.innerHTML = module
   }
 
-  purge() {
-    const filteredElements = [].slice.call(this.el.parentNode.children).filter(child => {
+  #purge() {
+    const filteredElements = Array.from(this.el.parentNode.children).filter(child => {
       return child !== this.el
     })
     filteredElements.forEach(el => el.remove())
   }
 
   #renderMenu() {
-    this.modules = this.modules.map(module => new module)
+    this.#modules = this.#modules.map(module => new module)
 
-    this.modules.forEach(instance => {
+    this.#modules.forEach(instance => {
       const moduleEl = instance.toHTML()
       this.#pointsMenu.push(moduleEl)
-      return this.add(this.#pointsMenu.join(''))
+      return this.#add(this.#pointsMenu.join(''))
     })
   }
 
@@ -45,14 +46,14 @@ export default class ContextMenu extends Menu {
     this.el.addEventListener('click', ({target}) => {
       if (!target.classList.contains('menu-item')) return false
 
-      this.purge()
+      this.#purge()
       this.close()
 
-      const clickedModuleInstance = this.modules.filter(moduleInstance => {
-        return moduleInstance.type === target.dataset.type
+      const clickModule = this.#modules.filter(instance => {
+        return instance.type === target.dataset.type
       })[0]
 
-      clickedModuleInstance.trigger()
+      clickModule.trigger()
     })
 
     document.addEventListener('contextmenu', (event) => {
@@ -62,10 +63,10 @@ export default class ContextMenu extends Menu {
       this.el.style.left = `${pageX}px`
       this.el.style.top = `${pageY}px`
 
-      if (this.modules !== [] && this.el.classList.contains(classOpen)) {
+      if (this.#modules !== [] && this.el.classList.contains(classOpen)) {
         return false
       } else {
-        this.open()
+        this.#open()
       }
     })
   }
