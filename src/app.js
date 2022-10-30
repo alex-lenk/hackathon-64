@@ -5,6 +5,7 @@ import {BackgroundModule} from './modules/background.module'
 import {MessageModule} from './modules/message.module'
 import {ClicksModule} from './modules/clicks.module'
 import {AudioModule} from './modules/audio.module'
+import MinesweeperModule from './modules/minesweeper.module'
 
 const menu = new ContextMenu('#menu', {
   modules: [
@@ -13,6 +14,7 @@ const menu = new ContextMenu('#menu', {
     MessageModule,
     ClicksModule,
     AudioModule,
+    MinesweeperModule
   ]
 })
 
