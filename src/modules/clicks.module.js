@@ -1,86 +1,83 @@
 import {Module} from '../core/module'
 import {body} from '../constants'
 
-
 export class ClicksModule extends Module {
- 
-    static TYPE = 'ClicksModule'
-    static TEXT = 'Считать клики'
-    
-    constructor() {
-        super(ClicksModule.TYPE, ClicksModule.TEXT)
+  constructor() {
+    super('ClicksModule', 'Считать клики')
+    this.timeEl = null
+    this.scoreEl = null
+  }
+
+  trigger = () => {
+    let time = this.#timeToFinish()
+    const stopTime = time
+    const timeHTMLEl = this.#createHTMLElement()
+    timeHTMLEl.textContent = 'Время пошло!'
+    this.scoreEl = document.querySelector('.score')
+    this.timeEl = document.querySelector('.time')
+    let score = 0
+    const timeCount = setInterval( () => {
+      time = this.#decreaseTime(time, score)
+    }, 1000)
+
+    setTimeout(() => {
+      clearInterval(timeCount)
+    }, (stopTime + 1) * 1000)
+
+    body.onclick = () => {
+      this.#setScore(score)
+      return score += 1
+    }
+  }
+
+  #timeToFinish = () => {
+    return Number(prompt('Сколько секунд Вы хотите, чтобы я считал клики?'))
+  }
+
+  #createHTMLElement = () => {
+    const createTimeEl = document.createElement('p')
+    createTimeEl.className = 'time'
+    createTimeEl.style.userSelect = 'none'
+    createTimeEl.innerHTML += '<br>'
+
+    const createScoreEl = document.createElement('p')
+    createScoreEl.className ='score'
+    createScoreEl.style.userSelect = 'none'
+    body.append(createTimeEl, createScoreEl)
+    return createTimeEl
+  }
+
+  #decreaseTime = (time, score) => {
+    if (time === 0) {
+      this.#finishGame(score)
+    } else {
+      let current = --time
+
+      if (current < 9) {
+        current = `0${current + 1}`
+      } else {
+        current = current + 1
+      }
+      this.#setTime(current)
     }
 
-    timeToFinish = () => {
-        const time = Number(prompt('Сколько секунд Вы хотите, чтобы я считал клики?'))
-        return time
-    }
+    return time
+  }
 
-    createHTMLElement = () => {
-        const timeEl = document.createElement('h2')
-        timeEl.className ='time'
-        timeEl.style.userSelect = 'none'
-        timeEl.innerHTML += `<br>`
+  #setTime = (value) => {
+    if (this.timeEl) this.timeEl.textContent = `00:${value}`
+  }
 
-        const scoreEl = document.createElement('h1')
-        scoreEl.className ='score'
-        scoreEl.style.userSelect = 'none'
-        body.append(timeEl, scoreEl)
-        return timeEl
-    }
+  #setScore = (value) => {
+    if (this.scoreEl) this.scoreEl.textContent = `Счет: ${value}`
+  }
 
-    trigger = () => {
-        let time = this.timeToFinish()
-        const stopTime = time
-        // this.createHTMLElement()
-        const timeCount = setInterval( () => {
-            time = this.decreaseTime(time, score)
-        }, 1000)
-        setTimeout(() => {
-            clearInterval(timeCount)
-        }, (stopTime + 1) * 1000)
-        const timeEl = this.createHTMLElement()
-        timeEl.textContent = `Время пошло:`
-        let score = 0
-        body.onclick = () => {
-            this.setScore(score)
-            return score += 1
-        }
-    }
-    decreaseTime = (time, score) => {
-        if (time === 0) {
-            
-            this.finishGame(time, score)
-        } else {
-            let current = --time
-            if (current < 10) {
-                current = `0${current + 1}`
-            }
-            this.setTime(current)
-        }
-        return time
-    }
+  #finishGame = (result) => {
+    this.scoreEl.remove()
+    this.timeEl.remove()
 
-    setTime = (value) => {
-        const timeEl = document.querySelector('.time')
-        if (timeEl) timeEl.textContent = `00:${value}` //, Счет: ${score}`
-    }
-
-    setScore = (value) => {
-        const scoreEl = document.querySelector('.score')
-        if (scoreEl) scoreEl.textContent = `Счет: ${value}`
-    }
-
-    finishGame = (time, score) => {
-        this.setTime(time)
-        const timeEl = document.querySelector('.time')
-        timeEl.innerHTML = ''
-        const scoreEl = document.querySelector('.score')
-        scoreEl.remove()
-        timeEl.remove()
-        
-        setTimeout(() => {
-            alert(`Итоговый счет: ${score - 1}`)
-        }, 1) 
-    }
+    setTimeout(() => {
+      alert(`Итоговый счет: ${result - 1}`)
+    }, 50)
+  }
 }
