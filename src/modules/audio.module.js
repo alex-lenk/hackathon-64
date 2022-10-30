@@ -1,11 +1,11 @@
 import {Module} from '../core/module'
 import random from '../utils/random'
 
-export class AudioModule extends Module {
+export default class AudioModule extends Module {
   #sounds
 
   constructor() {
-    super('AudioModule', 'Воспроизвести звук')      
+    super('AudioModule', 'Воспроизвести звук')
     this.#sounds = [
       'https://www.pacdv.com/sounds/domestic_sound_effects/bathtub-lock-1.mp3',
       `https://www.pacdv.com/sounds/domestic_sound_effects/microwave-oven-timer-1.wav`,
@@ -17,13 +17,13 @@ export class AudioModule extends Module {
     ]
   }
 
-    #getRandomSound = () => {
-      const index = random(0, this.#sounds.length - 1)
-      return this.#sounds[index]
-    }
-  
-    trigger() {
-      const audio = new Audio(this.#getRandomSound())
-      audio.play()
-    }
+  #getRandomSound = () => {
+    const index = random(0, this.#sounds.length - 1)
+    return this.#sounds[index]
   }
+
+  trigger() {
+    const audio = new Audio(this.#getRandomSound())
+    audio.play()
+  }
+}
