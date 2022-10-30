@@ -1,7 +1,7 @@
 import {Module} from '../core/module'
 import {body} from '../constants'
 
-export class ClicksModule extends Module {
+export default class ClicksModule extends Module {
   constructor() {
     super('ClicksModule', 'Считать клики')
     this.timeEl = null
@@ -16,7 +16,7 @@ export class ClicksModule extends Module {
     this.scoreEl = document.querySelector('.score')
     this.timeEl = document.querySelector('.time')
     let score = 0
-    const timeCount = setInterval( () => {
+    const timeCount = setInterval(() => {
       time = this.#decreaseTime(time, score)
     }, 1000)
 
@@ -41,7 +41,7 @@ export class ClicksModule extends Module {
     createTimeEl.innerHTML += '<br>'
 
     const createScoreEl = document.createElement('p')
-    createScoreEl.className ='score'
+    createScoreEl.className = 'score'
     createScoreEl.style.userSelect = 'none'
     body.append(createTimeEl, createScoreEl)
     return createTimeEl
