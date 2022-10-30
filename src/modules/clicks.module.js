@@ -79,5 +79,6 @@ export class ClicksModule extends Module {
         setTimeout(() => {
             alert(`Итоговый счет: ${result - 1}`)
         }, 50) 
+
     }
 }
