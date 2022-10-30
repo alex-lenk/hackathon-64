@@ -16,7 +16,7 @@ export default class ContextMenu extends Menu {
   }
 
   add(module) {
-    this.el.innerHTML = module
+    this.el.innerHTML += module
   }
 
   purge() {
