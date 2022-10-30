@@ -7,6 +7,8 @@ import {ClicksModule} from './modules/clicks.module'
 
 const menu = new ContextMenu('#menu', {
   modules: [
+    
+    ClicksModule,
     ShapeModule,
     BackgroundModule,
     MessegeModule,
