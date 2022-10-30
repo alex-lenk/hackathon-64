@@ -42,7 +42,6 @@ body {
     background: #343434;
 }
 
-
 @keyframes color-change {
   0% {
     color: rgb(255, 255, 255);
@@ -59,4 +58,20 @@ body {
 
 .text {
   animation: color-change 1s infinite;
+}
+
+// modules/clicks
+.score {
+    /* display: flex; */
+    font-size: 1.5rem;
+    font-weight: bold;
+    text-align: center;
+}
+
+.time {
+    /* display: flex; */
+    font-size: 1.5rem;
+    font-weight: bold;
+    text-align: center;
+    margin-top: 50px;
 }
